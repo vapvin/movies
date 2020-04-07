@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+// 063426a1e0139ca2b7238d48958dadc5
+
+class App extends React.Component {
+  state = {
+    movies: []
+  }
+
+  // getMovies = async () => {
+  //   await fetch(
+  //     "https://api.themoviedb.org/3/movie/popular?api_key=063426a1e0139ca2b7238d48958dadc5&language=en-US&page=1"
+  //   ).then(response => response.json()).then(json => this.setState({
+  //     movies: json.results
+  //   }));
+ 
+  // }
+
+  getMovies = async () => {
+    const {data: {results}} = await axios.get("https://api.themoviedb.org/3/movie/popular?api_key=063426a1e0139ca2b7238d48958dadc5&language=en-US&page=1");
+    this.setState({movies: results});
+  }
+
+  componentDidMount(){
+    this.getMovies();
+  }
+
+  render() {
+    const {movies} = this.state;
+    return (
+      <>
+      {movies.map(movie => {
+        return <div>{movie.title}</div>
+      })}
+      </>
+    )
+  }
 }
-
 export default App;
